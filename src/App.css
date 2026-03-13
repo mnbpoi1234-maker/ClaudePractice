@@ -50,6 +50,15 @@ button {
   justify-content: flex-end;
 }
 
+/* 플레이어 수 버튼 가로 배치 */
+.player-count-buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
 /* 중앙 게임 영역 */
 .center-area {
   position: fixed;
@@ -112,8 +121,8 @@ button {
   min-height: 48px;
 }
 
-.computer-action,
-.user-action {
+/* 플레이어별 행위 행 */
+.player-action {
   display: flex;
   gap: 8px;
 }
