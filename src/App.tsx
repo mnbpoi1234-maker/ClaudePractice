@@ -30,7 +30,7 @@ function App() {
       computerPlay()
     }, 1000)
     return () => clearTimeout(id)
-  }, [isComputerTurn, state.currentNumber])
+  }, [isComputerTurn, state.currentNumber, computerPlay])
 
   // 게임 종료 시 최고 기록 저장 + 효과음
   useEffect(() => {
@@ -38,13 +38,13 @@ function App() {
     playGameOverSound()
     saveBestScore(state.currentNumber)
     setBestScore(getBestScore())
-  }, [isGameOver])
+  }, [isGameOver, state.currentNumber])
 
-  // 사용자 박수 정답 시 효과음 포함 래퍼
+  // 사용자 박수: 박수가 필요한 숫자일 때만 효과음 재생
   const handleClap = () => {
-    // 사용자 턴이고 박수가 정답인 경우 효과음 재생
-    // (useGameLogic에서 오답 처리를 먼저 하므로 클릭 시점에만 재생)
-    playClapSound()
+    if (state.remainingClaps > 0) {
+      playClapSound()
+    }
     userClap()
   }
 

@@ -1,4 +1,4 @@
-import { Difficulty } from '../types/game'
+import type { Difficulty } from '../types/game'
 
 interface DifficultyButtonsProps {
   current: Difficulty

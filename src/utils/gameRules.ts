@@ -1,4 +1,4 @@
-import { ActionType } from '../types/game'
+import type { ActionType } from '../types/game'
 
 /**
  * 숫자에 포함된 3, 6, 9의 개수를 반환하는 순수 함수
