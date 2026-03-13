@@ -17,8 +17,8 @@ body {
 /* 우측 상단 설정 영역 */
 .settings {
   position: fixed;
-  top: 20px;
-  right: 20px;
+  top: 16px;
+  right: 16px;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
@@ -53,10 +53,36 @@ body {
   gap: 12px;
 }
 
+/* 차례 인디케이터 */
+.turn-indicator {
+  font-size: 14px;
+  padding: 4px 12px;
+  border-radius: 4px;
+}
+
+/* 컴퓨터 차례 */
+.turn-computer {
+  background-color: #f0f0f0;
+  color: #666;
+}
+
+/* 내 차례 - 파란색으로 강조 */
+.turn-user {
+  background-color: #e3f2fd;
+  color: #1565c0;
+  font-weight: bold;
+}
+
 /* 현재 숫자 */
 .current-number {
   font-size: 25px;
   font-weight: bold;
+}
+
+/* 게임 종료 시 최종 도달 숫자 */
+.final-number {
+  font-size: 16px;
+  color: #555;
 }
 
 /* 행위 표시 영역 */
@@ -106,6 +132,10 @@ body {
 
 .btn:hover:not(:disabled) {
   background-color: #f0f0f0;
+}
+
+.btn:active:not(:disabled) {
+  background-color: #e0e0e0;
 }
 
 .btn:disabled {
