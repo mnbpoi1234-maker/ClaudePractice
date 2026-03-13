@@ -1,6 +1,6 @@
-import { useReducer } from 'react'
-import { GameState, Difficulty, DIFFICULTY_TIME } from '../types/game'
-import { getCorrectAction, isCorrectUserAction } from '../utils/gameRules'
+import { useReducer, useCallback } from 'react'
+import type { GameState, Difficulty } from '../types/game'
+import { countClaps, getCorrectAction, isCorrectUserAction } from '../utils/gameRules'
 
 type Action =
   | { type: 'COMPUTER_PLAY' }
@@ -19,6 +19,7 @@ function createInitialState(difficulty: Difficulty): GameState {
     difficulty,
     computerActionText: '',
     userActionText: '',
+    remainingClaps: 0,
   }
 }
 
@@ -29,45 +30,55 @@ function gameReducer(state: GameState, action: Action): GameState {
       // 컴퓨터 턴이 아니거나 게임이 종료된 경우 무시
       if (state.turn !== 'computer' || state.status !== 'playing') return state
       const correctAction = getCorrectAction(state.currentNumber)
+      const nextNumber = state.currentNumber + 1
       return {
         ...state,
         computerActionText: correctAction.text,
         userActionText: '',
-        currentNumber: state.currentNumber + 1,
+        currentNumber: nextNumber,
         turn: 'user',
+        remainingClaps: countClaps(nextNumber),
       }
     }
 
     case 'USER_SHOUT': {
       // 사용자 턴이 아니거나 게임이 종료된 경우 무시 (연타 방지)
       if (state.turn !== 'user' || state.status !== 'playing') return state
-      if (isCorrectUserAction(state.currentNumber, 'shout')) {
-        const correctAction = getCorrectAction(state.currentNumber)
-        return {
-          ...state,
-          userActionText: correctAction.text,
-          currentNumber: state.currentNumber + 1,
-          turn: 'computer',
-        }
+      // 박수가 남아있는데 숫자를 외침 → 오답
+      if (state.remainingClaps > 0) return { ...state, status: 'gameover' }
+      const correctAction = getCorrectAction(state.currentNumber)
+      return {
+        ...state,
+        userActionText: correctAction.text,
+        currentNumber: state.currentNumber + 1,
+        turn: 'computer',
+        remainingClaps: 0,
       }
-      // 오답: 게임 종료
-      return { ...state, status: 'gameover' }
     }
 
     case 'USER_CLAP': {
       // 사용자 턴이 아니거나 게임이 종료된 경우 무시 (연타 방지)
       if (state.turn !== 'user' || state.status !== 'playing') return state
-      if (isCorrectUserAction(state.currentNumber, 'clap')) {
-        const correctAction = getCorrectAction(state.currentNumber)
+      // 박수가 필요없는 숫자에서 박수 → 오답
+      if (state.remainingClaps === 0) return { ...state, status: 'gameover' }
+      // 박수가 아직 남아있음 → 한 번 차감, 진행 중 텍스트 갱신
+      if (state.remainingClaps > 1) {
+        const clapsSoFar = countClaps(state.currentNumber) - state.remainingClaps + 1
         return {
           ...state,
-          userActionText: correctAction.text,
-          currentNumber: state.currentNumber + 1,
-          turn: 'computer',
+          remainingClaps: state.remainingClaps - 1,
+          userActionText: '/박수/'.repeat(clapsSoFar),
         }
       }
-      // 오답: 게임 종료
-      return { ...state, status: 'gameover' }
+      // 마지막 박수 → 정답, 다음 숫자로
+      const correctAction = getCorrectAction(state.currentNumber)
+      return {
+        ...state,
+        userActionText: correctAction.text,
+        currentNumber: state.currentNumber + 1,
+        turn: 'computer',
+        remainingClaps: 0,
+      }
     }
 
     case 'TIMEOUT': {
@@ -95,13 +106,13 @@ function gameReducer(state: GameState, action: Action): GameState {
 export function useGameLogic() {
   const [state, dispatch] = useReducer(gameReducer, createInitialState('normal'))
 
-  return {
-    state,
-    computerPlay: () => dispatch({ type: 'COMPUTER_PLAY' }),
-    userShout: () => dispatch({ type: 'USER_SHOUT' }),
-    userClap: () => dispatch({ type: 'USER_CLAP' }),
-    timeout: () => dispatch({ type: 'TIMEOUT' }),
-    setDifficulty: (difficulty: Difficulty) => dispatch({ type: 'SET_DIFFICULTY', difficulty }),
-    reset: () => dispatch({ type: 'RESET' }),
-  }
+  // dispatch는 안정적이므로 useCallback으로 메모이제이션하여 deps 문제 방지
+  const computerPlay = useCallback(() => dispatch({ type: 'COMPUTER_PLAY' }), [])
+  const userShout = useCallback(() => dispatch({ type: 'USER_SHOUT' }), [])
+  const userClap = useCallback(() => dispatch({ type: 'USER_CLAP' }), [])
+  const timeout = useCallback(() => dispatch({ type: 'TIMEOUT' }), [])
+  const setDifficulty = useCallback((difficulty: Difficulty) => dispatch({ type: 'SET_DIFFICULTY', difficulty }), [])
+  const reset = useCallback(() => dispatch({ type: 'RESET' }), [])
+
+  return { state, computerPlay, userShout, userClap, timeout, setDifficulty, reset }
 }

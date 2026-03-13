@@ -18,6 +18,7 @@ export interface GameState {
   difficulty: Difficulty   // 난이도
   computerActionText: string  // 컴퓨터가 수행한 행위 텍스트
   userActionText: string      // 사용자가 수행한 행위 텍스트
+  remainingClaps: number   // 현재 숫자에서 남은 박수 횟수
 }
 
 /** 난이도별 제한 시간 (초) */
