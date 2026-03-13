@@ -627,15 +627,22 @@ git commit -m "feat: 게임 UI 레이아웃 CSS 구현 (viewport 중앙 고정, 
 
 ## 완료 기준 (Definition of Done)
 
-- ⬜ `npm run dev`로 정상 구동 (`http://localhost:5173`)
-- ⬜ 페이지 정중앙에 현재 숫자가 25px 크기로 표시됨
-- ⬜ 컴퓨터가 먼저 올바른 행동(숫자 외치기/박수)을 수행하고 사용자 턴으로 전환됨
-- ⬜ 사용자가 "숫자외치기" 또는 "박수" 버튼을 눌러 응답 가능
-- ⬜ 올바른 응답 시 다음 숫자로 진행, 잘못된 응답 시 "게임 종료" 표시
-- ⬜ 리셋 버튼으로 게임 재시작 가능 (숫자 1, 컴퓨터 턴)
-- ⬜ `countClaps`, `getCorrectAction` 단위 테스트 전체 통과 (`npm test`)
-- ⬜ 브라우저 콘솔에 에러 없음
-- ⬜ TypeScript 컴파일 에러 없음 (`npm run build`)
+- ✅ `npm run dev`로 정상 구동 (`http://localhost:5173`)
+- ✅ 페이지 정중앙에 현재 숫자가 25px 크기로 표시됨
+- ✅ 컴퓨터가 먼저 올바른 행동(숫자 외치기/박수)을 수행하고 사용자 턴으로 전환됨
+- ✅ 사용자가 "숫자외치기" 또는 "박수" 버튼을 눌러 응답 가능
+- ✅ 올바른 응답 시 다음 숫자로 진행, 잘못된 응답 시 "게임 종료" 표시
+- ✅ 리셋 버튼으로 게임 재시작 가능 (숫자 1, 컴퓨터 턴)
+- ✅ `countClaps`, `getCorrectAction` 단위 테스트 전체 통과 (`npm test`)
+- ⬜ 브라우저 콘솔에 에러 없음 (수동 확인 필요)
+- ✅ TypeScript 컴파일 에러 없음 (`npx tsc --noEmit` 통과)
+
+---
+
+## 검증 결과 (Sprint Close: 2026-03-13)
+
+- [검증 보고서 (Playwright + 자동 검증)](sprint1/playwright-report.md)
+- [코드 리뷰 보고서](sprint1/code-review-report.md)
 
 ---
 

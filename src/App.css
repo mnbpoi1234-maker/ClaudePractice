@@ -1,0 +1,125 @@
+* {
+  font-family: '맑은 고딕', 'Malgun Gothic', sans-serif;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+/* 앱 전체 컨테이너 */
+.app {
+  width: 100vw;
+  height: 100vh;
+}
+
+/* 우측 상단 설정 영역 */
+.settings {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  z-index: 10;
+}
+
+/* 난이도 버튼 가로 배치 */
+.difficulty-buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+}
+
+/* 중앙 게임 영역 */
+.center-area {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+/* 게임 보드 */
+.game-board {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+/* 현재 숫자 */
+.current-number {
+  font-size: 25px;
+  font-weight: bold;
+}
+
+/* 행위 표시 영역 */
+.action-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  font-size: 16px;
+  min-height: 48px;
+}
+
+.computer-action,
+.user-action {
+  display: flex;
+  gap: 8px;
+}
+
+.action-label {
+  color: #666;
+}
+
+/* 타이머 */
+.timer {
+  font-size: 14px;
+  color: #e44;
+}
+
+/* 액션 버튼 영역 */
+.action-buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+}
+
+/* 공통 버튼 스타일 */
+.btn {
+  width: 100px;
+  height: 50px;
+  font-family: '맑은 고딕', 'Malgun Gothic', sans-serif;
+  font-size: 14px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  border-radius: 4px;
+}
+
+.btn:hover:not(:disabled) {
+  background-color: #f0f0f0;
+}
+
+.btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* 활성화된 난이도 버튼 */
+.btn-active {
+  background-color: #4a90d9;
+  color: #fff;
+  border-color: #357abd;
+}
+
+.btn-active:hover:not(:disabled) {
+  background-color: #357abd;
+}
