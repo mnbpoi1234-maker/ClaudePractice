@@ -23,6 +23,11 @@ docs/
   PRD.md           # 제품 요구사항 문서 (사용하는 프로젝트에서 생성)
   ROADMAP.md       # 프로젝트 로드맵 (prd-to-roadmap 에이전트가 생성)
   plans/           # 구현 계획 문서 (YYYY-MM-DD-<feature-name>.md)
+  product/		   # 배포 후, 운영 단계에서 인입된 버그 또는 추가 요청사항
+	bugfix/		   #배포 후, 운영 단계에서 인입된 버그
+		bugfix{N}.md
+	requirement/   #배포 후, 운영 단계에서 인입된 추가 요청사항
+		req{N}.md
   sprint/          # 스프린트 문서 및 검증 보고서
     sprint{N}.md
     sprint{N}/     # 스크린샷, Playwright 보고서
