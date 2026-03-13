@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
 import { useGameLogic } from './hooks/useGameLogic'
 import { useTimer } from './hooks/useTimer'
@@ -8,11 +8,17 @@ import { ActionButtons } from './components/ActionButtons'
 import { DifficultyButtons } from './components/DifficultyButtons'
 import { ResetButton } from './components/ResetButton'
 import { DIFFICULTY_TIME } from './types/game'
+import { getBestScore, saveBestScore } from './utils/bestScore'
+import { playClapSound, playGameOverSound } from './utils/sound'
 
 function App() {
   const { state, computerPlay, userShout, userClap, timeout, setDifficulty, reset } = useGameLogic()
   const isUserTurn = state.turn === 'user' && state.status === 'playing'
   const isComputerTurn = state.turn === 'computer' && state.status === 'playing'
+  const isGameOver = state.status === 'gameover'
+
+  // 최고 기록 상태 (localStorage 초기값)
+  const [bestScore, setBestScore] = useState<number>(() => getBestScore())
 
   // 타이머: 사용자 턴 카운트다운, 남은 시간 반환
   const timeLeft = useTimer(isUserTurn, DIFFICULTY_TIME[state.difficulty], timeout)
@@ -26,12 +32,33 @@ function App() {
     return () => clearTimeout(id)
   }, [isComputerTurn, state.currentNumber])
 
+  // 게임 종료 시 최고 기록 저장 + 효과음
+  useEffect(() => {
+    if (!isGameOver) return
+    playGameOverSound()
+    saveBestScore(state.currentNumber)
+    setBestScore(getBestScore())
+  }, [isGameOver])
+
+  // 사용자 박수 정답 시 효과음 포함 래퍼
+  const handleClap = () => {
+    // 사용자 턴이고 박수가 정답인 경우 효과음 재생
+    // (useGameLogic에서 오답 처리를 먼저 하므로 클릭 시점에만 재생)
+    playClapSound()
+    userClap()
+  }
+
   // 키보드 단축키
   useKeyboardShortcut('a', userShout, isUserTurn)
-  useKeyboardShortcut('l', userClap, isUserTurn)
+  useKeyboardShortcut('l', handleClap, isUserTurn)
 
   return (
     <div className="app">
+      {/* 좌측 상단: 최고 기록 */}
+      <div className="best-score" aria-label={`최고 기록 ${bestScore}`}>
+        최고 기록: {bestScore}
+      </div>
+
       {/* 우측 상단: 난이도 + 리셋 */}
       <div className="settings">
         <DifficultyButtons current={state.difficulty} onChange={setDifficulty} />
@@ -42,7 +69,7 @@ function App() {
       <div className="center-area">
         <GameBoard
           currentNumber={state.currentNumber}
-          isGameOver={state.status === 'gameover'}
+          isGameOver={isGameOver}
           computerActionText={state.computerActionText}
           userActionText={state.userActionText}
           isUserTurn={isUserTurn}
@@ -50,7 +77,7 @@ function App() {
         />
         <ActionButtons
           onShout={userShout}
-          onClap={userClap}
+          onClap={handleClap}
           disabled={!isUserTurn}
         />
       </div>

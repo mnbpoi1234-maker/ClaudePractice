@@ -27,10 +27,10 @@ type: project
 | 스프린트 | 상태 | 주요 내용 |
 |----------|------|-----------|
 | Sprint 1 | 완료 (2026-03-13) | 프로젝트 세팅, 핵심 게임 로직, 기본 UI + Phase 2 기능(난이도, 타이머, 키보드) 모두 구현 |
-| Sprint 2 | 계획 수립 완료 (2026-03-13) | Phase 3: 통합 검증, 엣지케이스, UI 폴리싱, 코드 정리 (ROADMAP Phase 3 담당) |
-| Sprint 3 | - | Sprint 1에서 Phase 2까지 완료하여 Sprint 3은 불필요해짐 |
+| Sprint 2 | 완료 (2026-03-13) | Phase 3: 통합 검증, 엣지케이스, UI 폴리싱, 코드 정리 (ROADMAP Phase 3 담당) |
+| Sprint 3 | 계획 수립 완료 (2026-03-13) | Backlog 4개 기능: 게임 기록(localStorage), 사운드(Web Audio API), 모바일 최적화, 접근성 강화 |
 
-**중요:** Sprint 1에서 ROADMAP Phase 1 + Phase 2가 모두 구현됨. Sprint 2가 Phase 3(MVP 완성)를 담당.
+**중요:** Sprint 1에서 ROADMAP Phase 1 + Phase 2가 모두 구현됨. Sprint 2가 Phase 3(MVP 완성)를 담당. Sprint 3은 Backlog 기능 구현.
 
 ## Sprint 1 핵심 산출물
 
@@ -51,6 +51,17 @@ type: project
 - 담당: ROADMAP Phase 3 (통합 검증 + 엣지케이스 + UI 폴리싱 + 코드 정리)
 - 9개 Task로 구성, 각 Task별 커밋 단위
 - 핵심 작업: TypeScript strict, 디바운싱, 큰 숫자 테스트, 턴 시각적 피드백, 게임종료 최종숫자 표시
+
+## Sprint 3 계획 요약 (2026-03-13 수립)
+
+- 담당: ROADMAP Backlog 4개 항목
+- 6개 Task로 구성 (Task 1: 코드 분석, Task 2~5: 기능 구현, Task 6: 품질 검증)
+- 핵심 작업:
+  - Task 2: `bestScore.ts` 유틸 + localStorage 최고 기록 저장/표시
+  - Task 3: `sound.ts` Web Audio API 합성음 (외부 파일 없음)
+  - Task 4: CSS 미디어 쿼리 모바일 버튼 크기/간격 개선
+  - Task 5: ARIA 레이블, aria-pressed, aria-live, sr-only 접근성 추가
+- Karpathy Guidelines 준수: 외부 라이브러리 없음, 최소 추상화
 
 ## 아키텍처 결정 사항
 
