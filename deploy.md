@@ -1,7 +1,7 @@
 # 배포 및 검증 가이드
 
 **프로젝트**: 369 게임 (React + TypeScript)
-**최종 업데이트**: 2026-03-13 (Sprint 2 완료)
+**최종 업데이트**: 2026-03-13 (Sprint 3 완료)
 
 ---
 
@@ -167,9 +167,67 @@ npm run dev
 
 ---
 
+---
+
+## Sprint 3 검증 체크리스트
+
+### 자동 검증 완료 항목 (2026-03-13)
+
+- ✅ 단위 테스트 27개 전체 통과 (`npm test`)
+  - `countClaps`, `getCorrectAction`, `isCorrectUserAction`: 21개 (기존)
+  - `getBestScore`, `saveBestScore`: 6개 (신규, edge case 포함)
+- ✅ TypeScript 타입 체크 통과 (`npx tsc --noEmit` — 에러 없음)
+
+### 수동 검증 필요 항목
+
+아래 항목들은 개발자가 직접 브라우저에서 확인해야 합니다.
+
+#### 사전 준비
+
+```bash
+# 프로젝트 루트(C:\CLAUDEPractice)에서 실행
+npm run dev
+# 브라우저에서 http://localhost:5173 접속
+```
+
+#### 게임 기록 (localStorage)
+
+- ⬜ 화면 좌측 상단에 "최고 기록: 0" 표시됨
+- ⬜ 게임 종료 시 최고 기록 갱신됨
+- ⬜ 브라우저 새로고침 후 최고 기록 유지됨 (F12 > Application > Local Storage > `369_best_score`)
+- ⬜ 낮은 점수로 종료 시 최고 기록 변경되지 않음
+
+#### 사운드 효과 (Web Audio API — 자동화 불가)
+
+- ⬜ 박수 정답 입력 시 짧은 비프음 재생됨
+- ⬜ 게임 종료 시 낮은 하강음 재생됨
+- ⬜ 새로고침 후 첫 클릭 시 소리 정상 재생 (autoplay 정책 우회)
+- ⬜ 브라우저 콘솔에 AudioContext 관련 에러 없음
+
+#### 모바일 최적화 (DevTools > Toggle device toolbar)
+
+- ⬜ iPhone SE 375px: 버튼이 잘리지 않고 모두 표시됨
+- ⬜ iPhone SE 375px: 버튼 간격이 충분하여 오탭 위험 낮음
+- ⬜ 데스크톱 1920px: 기존 레이아웃 그대로 유지
+
+#### 접근성 (DevTools > Accessibility 탭)
+
+- ⬜ "숫자외치기" 버튼 accessible name: "숫자외치기 (단축키: A)"
+- ⬜ "박수" 버튼 accessible name: "박수치기 (단축키: L)"
+- ⬜ 난이도 버튼의 `aria-pressed` 상태가 선택 시 true로 변경됨
+
+#### 콘솔 에러
+
+- ⬜ 게임 플레이 전 과정에서 브라우저 콘솔 에러 없음 (F12 > Console 탭)
+
+---
+
 ## 알려진 이슈 및 메모
 
-- Sprint 2 완료: 난이도 시스템, 타이머, 키보드 단축키, UI 폴리싱, 코드 품질 정리 모두 완료
-- MVP 완성 상태 (Phase 1 + Phase 2 + Phase 3 모두 완료)
-- 코드 리뷰 보고서: `docs/sprint/sprint2/code-review-report.md`
-- 검증 보고서: `docs/sprint/sprint2/validation-report.md`
+- Sprint 3 완료: 게임 기록(localStorage), 사운드 효과(Web Audio API), 모바일 최적화(768px 미디어 쿼리), 접근성 강화(ARIA) 모두 완료
+- Enhanced MVP 완성 상태 (Sprint 1 + Sprint 2 + Sprint 3 완료)
+- 코드 리뷰 Important 이슈: 오답 박수 시 박수음+종료음 중복 재생 (UX 이슈, 기능 동작에는 영향 없음)
+- Sprint 2 코드 리뷰 보고서: `docs/sprint/sprint2/code-review-report.md`
+- Sprint 2 검증 보고서: `docs/sprint/sprint2/validation-report.md`
+- Sprint 3 코드 리뷰 보고서: `docs/sprint/sprint3/code-review-report.md`
+- Sprint 3 검증 보고서: `docs/sprint/sprint3/validation-report.md`

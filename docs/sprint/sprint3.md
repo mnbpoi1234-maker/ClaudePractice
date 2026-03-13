@@ -4,6 +4,11 @@
 
 **Goal:** MVP 완성 이후 Backlog에 쌓인 4가지 기능(게임 기록, 사운드 효과, 모바일 최적화, 접근성 강화)을 단순하고 최소한의 추상화로 구현한다.
 
+## 검증 결과
+
+- [검증 보고서](sprint3/validation-report.md)
+- [코드 리뷰 보고서](sprint3/code-review-report.md)
+
 **Architecture:** 기존 컴포넌트 구조(`useGameLogic`, `useTimer`, `useKeyboardShortcut`, `GameBoard`, `ActionButtons`, `DifficultyButtons`, `ResetButton`)를 최소한으로 수정한다. localStorage 직접 호출, Web Audio API 직접 호출 방식으로 외부 라이브러리 없이 구현한다. Karpathy Guidelines 준수: 단순하게, 필요한 것만, 최소한의 추상화로.
 
 **Tech Stack:** React 18+, TypeScript, Vite, Vitest, 순수 CSS, Web Audio API, localStorage
