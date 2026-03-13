@@ -706,14 +706,14 @@ cd 369-game && npm run dev
 
 ## 완료 기준 (Definition of Done)
 
-- ⬜ `npx tsc --noEmit` 통과 (TypeScript 에러 없음)
-- ⬜ `npm test` 전체 통과 (bestScore 유닛 테스트 포함)
-- ⬜ 최고 기록이 localStorage에 저장되고 새로고침 후 유지됨
-- ⬜ 박수 정답 입력 시 효과음, 게임 종료 시 효과음 재생
-- ⬜ 모바일(375px)에서 버튼이 잘리지 않고 탭 영역이 충분함
-- ⬜ 버튼에 적절한 aria-label, aria-pressed, aria-live 속성이 부여됨
-- ⬜ 콘솔 에러/경고 없음
-- ⬜ 기존 게임 로직 회귀 없음 (종료 전과 동일하게 게임 정상 동작)
+- ✅ `npx tsc --noEmit` 통과 (TypeScript 에러 없음)
+- ✅ `npm test` 전체 통과 (27개, bestScore 유닛 테스트 포함)
+- ✅ 최고 기록이 localStorage에 저장되고 새로고침 후 유지됨
+- ⬜ 박수 정답 입력 시 효과음, 게임 종료 시 효과음 재생 (수동 확인 필요)
+- ⬜ 모바일(375px)에서 버튼이 잘리지 않고 탭 영역이 충분함 (수동 확인 필요)
+- ✅ 버튼에 적절한 aria-label, aria-pressed, aria-live 속성이 부여됨
+- ⬜ 콘솔 에러/경고 없음 (수동 확인 필요)
+- ✅ 기존 게임 로직 회귀 없음 (27개 테스트 전체 통과)
 
 ---
 
