@@ -1,8 +1,11 @@
+import { PLAYER_COLORS, PLAYER_NAMES } from '../types/game'
+
 interface GameBoardProps {
   currentNumber: number
   isGameOver: boolean
-  computerActionText: string
-  userActionText: string
+  actionTexts: [string, string, string, string]
+  playerCount: number
+  currentPlayerIndex: number
   isUserTurn: boolean
   timeLeft: number
 }
@@ -10,13 +13,14 @@ interface GameBoardProps {
 export function GameBoard({
   currentNumber,
   isGameOver,
-  computerActionText,
-  userActionText,
+  actionTexts,
+  playerCount,
+  currentPlayerIndex,
   isUserTurn,
   timeLeft,
 }: GameBoardProps) {
-  const turnText = isGameOver ? '' : isUserTurn ? '내 차례' : '컴퓨터 차례'
-  const turnClass = isUserTurn ? 'turn-user' : 'turn-computer'
+  const currentColor = PLAYER_COLORS[currentPlayerIndex]
+  const currentName = PLAYER_NAMES[currentPlayerIndex]
 
   return (
     <div className="game-board">
@@ -24,14 +28,18 @@ export function GameBoard({
       <div aria-live="polite" aria-atomic="true" className="sr-only">
         {isGameOver
           ? `게임 종료. 최종 도달 숫자: ${currentNumber}`
-          : `현재 숫자 ${currentNumber}. ${isUserTurn ? '당신의 차례입니다.' : '컴퓨터 차례입니다.'}`
+          : `현재 숫자 ${currentNumber}. ${isUserTurn ? '당신의 차례입니다.' : `${currentName} 차례입니다.`}`
         }
       </div>
 
       {/* 현재 차례 표시 */}
       {!isGameOver && (
-        <div className={`turn-indicator ${turnClass}`} aria-hidden="true">
-          {turnText}
+        <div
+          className="turn-indicator"
+          style={{ backgroundColor: `${currentColor}18`, color: currentColor }}
+          aria-hidden="true"
+        >
+          {currentName} 차례
         </div>
       )}
 
@@ -45,16 +53,16 @@ export function GameBoard({
         <div className="final-number">최종 도달 숫자: {currentNumber}</div>
       )}
 
-      {/* 컴퓨터/사용자 행위 표시 */}
+      {/* 플레이어별 행위 표시 */}
       <div className="action-display" aria-label="행위 기록">
-        <div className="computer-action">
-          <span className="action-label">컴퓨터:</span>
-          <span>{computerActionText}</span>
-        </div>
-        <div className="user-action">
-          <span className="action-label">나:</span>
-          <span>{userActionText}</span>
-        </div>
+        {Array.from({ length: playerCount }, (_, i) => (
+          <div key={i} className="player-action">
+            <span className="action-label" style={{ color: PLAYER_COLORS[i] }}>
+              {PLAYER_NAMES[i]}:
+            </span>
+            <span>{actionTexts[i]}</span>
+          </div>
+        ))}
       </div>
 
       {/* 사용자 턴일 때 타이머 표시 */}

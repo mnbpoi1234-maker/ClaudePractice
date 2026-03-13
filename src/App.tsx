@@ -6,15 +6,16 @@ import { useKeyboardShortcut } from './hooks/useKeyboardShortcut'
 import { GameBoard } from './components/GameBoard'
 import { ActionButtons } from './components/ActionButtons'
 import { DifficultyButtons } from './components/DifficultyButtons'
+import { PlayerCountSelector } from './components/PlayerCountSelector'
 import { ResetButton } from './components/ResetButton'
 import { DIFFICULTY_TIME } from './types/game'
 import { getBestScore, saveBestScore } from './utils/bestScore'
 import { playClapSound, playGameOverSound } from './utils/sound'
 
 function App() {
-  const { state, computerPlay, userShout, userClap, timeout, setDifficulty, reset } = useGameLogic()
-  const isUserTurn = state.turn === 'user' && state.status === 'playing'
-  const isComputerTurn = state.turn === 'computer' && state.status === 'playing'
+  const { state, computerPlay, userShout, userClap, timeout, setDifficulty, setPlayerCount, reset } = useGameLogic()
+  const isUserTurn = state.currentPlayerIndex === 0 && state.status === 'playing'
+  const isComputerTurn = state.currentPlayerIndex > 0 && state.status === 'playing'
   const isGameOver = state.status === 'gameover'
 
   // 최고 기록 상태 (localStorage 초기값)
@@ -23,7 +24,7 @@ function App() {
   // 타이머: 사용자 턴 카운트다운, 남은 시간 반환
   const timeLeft = useTimer(isUserTurn, DIFFICULTY_TIME[state.difficulty], timeout)
 
-  // 컴퓨터 턴 자동 진행 (~1초 후)
+  // 컴퓨터 턴 자동 진행 (~1초 후) — 여러 컴퓨터가 연속으로 차례를 가질 수 있음
   useEffect(() => {
     if (!isComputerTurn) return
     const id = setTimeout(() => {
@@ -59,8 +60,9 @@ function App() {
         최고 기록: {bestScore}
       </div>
 
-      {/* 우측 상단: 난이도 + 리셋 */}
+      {/* 우측 상단: 플레이어 수 + 난이도 + 리셋 */}
       <div className="settings">
+        <PlayerCountSelector value={state.pendingPlayerCount} onChange={setPlayerCount} />
         <DifficultyButtons current={state.difficulty} onChange={setDifficulty} />
         <ResetButton onReset={reset} />
       </div>
@@ -70,8 +72,9 @@ function App() {
         <GameBoard
           currentNumber={state.currentNumber}
           isGameOver={isGameOver}
-          computerActionText={state.computerActionText}
-          userActionText={state.userActionText}
+          actionTexts={state.actionTexts}
+          playerCount={state.playerCount}
+          currentPlayerIndex={state.currentPlayerIndex}
           isUserTurn={isUserTurn}
           timeLeft={timeLeft}
         />
